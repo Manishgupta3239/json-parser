@@ -25,14 +25,14 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={() => setIsDark(!isDark)}
-      className="p-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white/80 dark:bg-zinc-900/80 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 cursor-pointer shadow-sm hover:shadow-md transition-all duration-300 flex items-center justify-center group relative overflow-hidden"
+      className="p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white/80 dark:bg-zinc-900/80 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 cursor-pointer shadow-sm hover:shadow-md transition-all duration-300 flex items-center justify-center group relative overflow-hidden"
       aria-label="Toggle theme"
       id="theme-toggle-btn"
     >
-      <div className="relative w-5 h-5 flex items-center justify-center">
+      <div className="relative w-4 h-4 flex items-center justify-center">
         {/* Sun Icon */}
         <svg
-          className={`w-5 h-5 text-amber-500 absolute transition-all duration-500 transform ${
+          className={`w-4 h-4 text-amber-500 absolute transition-all duration-500 transform ${
             isDark ? 'rotate-90 scale-0 opacity-0' : 'rotate-0 scale-100 opacity-100'
           }`}
           fill="none"
@@ -49,7 +49,7 @@ export default function ThemeToggle() {
 
         {/* Moon Icon */}
         <svg
-          className={`w-5 h-5 text-indigo-400 absolute transition-all duration-500 transform ${
+          className={`w-4 h-4 text-indigo-400 absolute transition-all duration-500 transform ${
             isDark ? 'rotate-0 scale-100 opacity-100' : '-rotate-90 scale-0 opacity-0'
           }`}
           fill="none"

@@ -28,7 +28,7 @@ function HighlightedText({ text, highlight }) {
     <span>
       {parts.map((part, i) => 
         part.toLowerCase() === highlight.toLowerCase() ? (
-          <mark key={i} className="bg-amber-200/80 dark:bg-amber-500/40 text-zinc-950 dark:text-zinc-50 rounded px-0.5 font-medium">{part}</mark>
+          <mark key={i} className="search-match-highlight bg-amber-200/80 dark:bg-amber-500/40 text-zinc-950 dark:text-zinc-50 rounded px-0.5 font-medium">{part}</mark>
         ) : (
           <span key={i}>{part}</span>
         )
@@ -63,8 +63,12 @@ function JsonTreeNode({ name, value, path, filterQuery, defaultExpanded, expandV
 
   // Sync with global Expand All / Collapse All triggers
   useEffect(() => {
-    setIsExpanded(defaultExpanded);
-  }, [defaultExpanded, expandVersion]);
+    if (defaultExpanded === 'level1') {
+      setIsExpanded(path.length === 0);
+    } else {
+      setIsExpanded(defaultExpanded);
+    }
+  }, [defaultExpanded, expandVersion, path.length]);
 
   // Automatically expand if search query is active and there is a match inside
   useEffect(() => {

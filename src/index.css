@@ -58,3 +58,10 @@ body {
 .dark .highlight-match {
   background-color: rgba(234, 179, 8, 0.45);
 }
+
+/* Custom styles for active search matches */
+.search-match-highlight.active-search-match {
+  background-color: #6366f1 !important; /* Indigo 500 */
+  color: #ffffff !important;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.4);
+}

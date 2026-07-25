@@ -56,7 +56,7 @@ function formatPath(path) {
   }).join('');
 }
 
-function JsonTreeNode({ name, value, path, filterQuery, defaultExpanded, expandVersion, searchMode = 'filter' }) {
+function JsonTreeNode({ name, value, path, filterQuery, defaultExpanded, expandVersion, searchMode = 'filter', parentMatched = false }) {
   const [isExpanded, setIsExpanded] = useState(defaultExpanded);
   const [copied, setCopied] = useState(false);
   const [copiedPath, setCopiedPath] = useState(false);
@@ -73,9 +73,22 @@ function JsonTreeNode({ name, value, path, filterQuery, defaultExpanded, expandV
     }
   }, [filterQuery, value, name]);
 
+  const isDirectMatch = useMemo(() => {
+    if (!filterQuery) return true;
+    const q = filterQuery.toLowerCase();
+    if (name && String(name).toLowerCase().includes(q)) return true;
+    if (typeof value !== 'object' || value === null) {
+      return String(value).toLowerCase().includes(q);
+    }
+    return false;
+  }, [name, value, filterQuery]);
+
   const matches = useMemo(() => {
+    if (parentMatched) return true;
     return hasSearchMatch(value, name, filterQuery);
-  }, [value, name, filterQuery]);
+  }, [value, name, filterQuery, parentMatched]);
+
+  const childrenParentMatched = parentMatched || isDirectMatch;
 
   // If search is active and this node does not match in filter mode, don't render it
   if (filterQuery && searchMode === 'filter' && !matches) {
@@ -187,6 +200,7 @@ function JsonTreeNode({ name, value, path, filterQuery, defaultExpanded, expandV
                     defaultExpanded={defaultExpanded}
                     expandVersion={expandVersion}
                     searchMode={searchMode}
+                    parentMatched={childrenParentMatched}
                   />
                 ))
               : Object.entries(value).map(([key, val]) => (
@@ -199,6 +213,7 @@ function JsonTreeNode({ name, value, path, filterQuery, defaultExpanded, expandV
                     defaultExpanded={defaultExpanded}
                     expandVersion={expandVersion}
                     searchMode={searchMode}
+                    parentMatched={childrenParentMatched}
                   />
                 ))}
           </div>
@@ -300,6 +315,7 @@ export default function JsonTreeViewer({ data, filterQuery, defaultExpanded, exp
         defaultExpanded={defaultExpanded}
         expandVersion={expandVersion}
         searchMode={searchMode}
+        parentMatched={false}
       />
     </div>
   );

@@ -67,6 +67,7 @@ export default function App() {
   const [defaultExpanded, setDefaultExpanded] = useState(true);
   const [expandVersion, setExpandVersion] = useState(0);
   const [copiedSuccess, setCopiedSuccess] = useState(false);
+  const [searchMode, setSearchMode] = useState('filter'); // 'filter' or 'highlight'
 
   // Split-pane offset states
   const [splitWidth, setSplitWidth] = useState(() => {
@@ -398,32 +399,62 @@ export default function App() {
             <div className="flex-1 p-4 flex flex-col gap-4 overflow-hidden min-h-0">
               
               {/* Filter Search Input */}
+              {/* Search Bar & Mode Switcher */}
               {parsedData && (
-                <div className="relative group/search">
-                  <input
-                    type="text"
-                    value={filterQuery}
-                    onChange={(e) => setFilterQuery(e.target.value)}
-                    placeholder="Search keys or values..."
-                    className="w-full pl-9 pr-8 py-2 text-sm bg-zinc-50 hover:bg-zinc-100/50 dark:bg-zinc-950 dark:hover:bg-zinc-950 focus:bg-white dark:focus:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 focus:border-indigo-500/60 dark:focus:border-indigo-500/40 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/10 dark:focus:ring-indigo-400/10 transition-all font-sans"
-                    id="search-json-filter"
-                  />
-                  <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400 dark:text-zinc-600 pointer-events-none group-focus-within/search:text-indigo-500 dark:group-focus-within/search:text-indigo-400 transition-colors">
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.604 10.604z" />
-                    </svg>
-                  </div>
-                  {filterQuery && (
-                    <button
-                      onClick={() => setFilterQuery('')}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-300 p-0.5 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer"
-                      title="Clear search"
-                    >
-                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                <div className="flex items-center gap-3 flex-wrap sm:flex-nowrap">
+                  {/* Filter Search Input */}
+                  <div className="relative group/search flex-1 min-w-[200px]">
+                    <input
+                      type="text"
+                      value={filterQuery}
+                      onChange={(e) => setFilterQuery(e.target.value)}
+                      placeholder="Search keys or values..."
+                      className="w-full pl-9 pr-8 py-2 text-sm bg-zinc-50 hover:bg-zinc-100/50 dark:bg-zinc-950 dark:hover:bg-zinc-950 focus:bg-white dark:focus:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 focus:border-indigo-500/60 dark:focus:border-indigo-500/40 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/10 dark:focus:ring-indigo-400/10 transition-all font-sans"
+                      id="search-json-filter"
+                    />
+                    <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400 dark:text-zinc-600 pointer-events-none group-focus-within/search:text-indigo-500 dark:group-focus-within/search:text-indigo-400 transition-colors">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.604 10.604z" />
                       </svg>
+                    </div>
+                    {filterQuery && (
+                      <button
+                        onClick={() => setFilterQuery('')}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-300 p-0.5 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer"
+                        title="Clear search"
+                      >
+                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Search Mode Switcher */}
+                  <div className="flex bg-zinc-100 dark:bg-zinc-950 p-1 rounded-xl border border-zinc-200/50 dark:border-zinc-850/50 select-none">
+                    <button
+                      onClick={() => setSearchMode('filter')}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer transition-all duration-200 ${
+                        searchMode === 'filter'
+                          ? 'bg-white dark:bg-zinc-900 text-indigo-600 dark:text-indigo-400 shadow-sm'
+                          : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-850 dark:hover:text-zinc-200'
+                      }`}
+                      title="Hide non-matching nodes (Filter View)"
+                    >
+                      Filter
                     </button>
-                  )}
+                    <button
+                      onClick={() => setSearchMode('highlight')}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer transition-all duration-200 ${
+                        searchMode === 'highlight'
+                          ? 'bg-white dark:bg-zinc-900 text-indigo-600 dark:text-indigo-400 shadow-sm'
+                          : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-850 dark:hover:text-zinc-200'
+                      }`}
+                      title="Keep entire tree visible, just highlight matches (Highlight View)"
+                    >
+                      Highlight
+                    </button>
+                  </div>
                 </div>
               )}
 
@@ -434,6 +465,7 @@ export default function App() {
                   filterQuery={filterQuery}
                   defaultExpanded={defaultExpanded}
                   expandVersion={expandVersion}
+                  searchMode={searchMode}
                 />
               </div>
             </div>

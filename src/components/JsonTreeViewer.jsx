@@ -56,7 +56,7 @@ function formatPath(path) {
   }).join('');
 }
 
-function JsonTreeNode({ name, value, path, filterQuery, defaultExpanded, expandVersion }) {
+function JsonTreeNode({ name, value, path, filterQuery, defaultExpanded, expandVersion, searchMode = 'filter' }) {
   const [isExpanded, setIsExpanded] = useState(defaultExpanded);
   const [copied, setCopied] = useState(false);
   const [copiedPath, setCopiedPath] = useState(false);
@@ -77,8 +77,8 @@ function JsonTreeNode({ name, value, path, filterQuery, defaultExpanded, expandV
     return hasSearchMatch(value, name, filterQuery);
   }, [value, name, filterQuery]);
 
-  // If search is active and this node does not match, don't render it
-  if (filterQuery && !matches) {
+  // If search is active and this node does not match in filter mode, don't render it
+  if (filterQuery && searchMode === 'filter' && !matches) {
     return null;
   }
 
@@ -186,6 +186,7 @@ function JsonTreeNode({ name, value, path, filterQuery, defaultExpanded, expandV
                     filterQuery={filterQuery}
                     defaultExpanded={defaultExpanded}
                     expandVersion={expandVersion}
+                    searchMode={searchMode}
                   />
                 ))
               : Object.entries(value).map(([key, val]) => (
@@ -197,6 +198,7 @@ function JsonTreeNode({ name, value, path, filterQuery, defaultExpanded, expandV
                     filterQuery={filterQuery}
                     defaultExpanded={defaultExpanded}
                     expandVersion={expandVersion}
+                    searchMode={searchMode}
                   />
                 ))}
           </div>
@@ -262,7 +264,7 @@ function JsonTreeNode({ name, value, path, filterQuery, defaultExpanded, expandV
   );
 }
 
-export default function JsonTreeViewer({ data, filterQuery, defaultExpanded, expandVersion }) {
+export default function JsonTreeViewer({ data, filterQuery, defaultExpanded, expandVersion, searchMode = 'filter' }) {
   // Memoize search check at root to show empty status if query matches nothing
   const matchesSearch = useMemo(() => {
     if (!filterQuery) return true;
@@ -277,7 +279,7 @@ export default function JsonTreeViewer({ data, filterQuery, defaultExpanded, exp
     );
   }
 
-  if (filterQuery && !matchesSearch) {
+  if (filterQuery && searchMode === 'filter' && !matchesSearch) {
     return (
       <div className="flex flex-col items-center justify-center py-12 px-4 border border-zinc-200 dark:border-zinc-800 rounded-2xl bg-zinc-50/50 dark:bg-zinc-900/20">
         <svg className="w-8 h-8 text-zinc-300 dark:text-zinc-700 mb-2" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
@@ -297,6 +299,7 @@ export default function JsonTreeViewer({ data, filterQuery, defaultExpanded, exp
         filterQuery={filterQuery}
         defaultExpanded={defaultExpanded}
         expandVersion={expandVersion}
+        searchMode={searchMode}
       />
     </div>
   );

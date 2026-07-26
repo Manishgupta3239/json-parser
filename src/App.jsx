@@ -7,7 +7,7 @@ const DEFAULT_SAMPLE_JSON = `{
   "version": "1.0.0",
   "developer": {
     "name": "Manish Gupta",
-    "github": "https://github.com",
+    "github": "https://github.com/Manishgupta3239/",
     "active": true
   },
   "features": [

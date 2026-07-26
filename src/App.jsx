@@ -6,7 +6,7 @@ const DEFAULT_SAMPLE_JSON = `{
   "appName": "SimplJSON",
   "version": "1.0.0",
   "developer": {
-    "name": "Antigravity Devs",
+    "name": "Manish Gupta",
     "github": "https://github.com",
     "active": true
   },

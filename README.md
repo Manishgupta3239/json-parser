@@ -2,6 +2,8 @@
 
 SimplJSON is a lightweight, premium, and highly interactive developer-focused JSON parser and viewer. Standard online JSON formatters are often bloated with ads, clunky, or lack critical keyboard search navigation. SimplJSON addresses these pain points with a clean, responsive single-screen workspace designed to streamline raw API response inspection.
 
+🚀 **Try the Live App:** [json-parser-q4zd.onrender.com](https://json-parser-q4zd.onrender.com/)
+
 ---
 
 ## ✨ Features

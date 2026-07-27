@@ -60,7 +60,7 @@ function getDetailedError(err, jsonStr) {
 }
 
 export default function App() {
-  const [inputJson, setInputJson] = useState(DEFAULT_SAMPLE_JSON);
+  const [inputJson, setInputJson] = useState("");
   const [parsedData, setParsedData] = useState(null);
   const [error, setError] = useState(null);
   const [filterQuery, setFilterQuery] = useState('');

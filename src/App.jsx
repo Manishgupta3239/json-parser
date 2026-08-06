@@ -295,7 +295,19 @@ export default function App() {
           <div className="flex items-center gap-1.5">
             <ThemeToggle />
             <a
-              href="https://github.com"
+              href="https://github.com/Manishgupta3239/json-parser/issues"
+              target="_blank"
+              rel="noreferrer"
+              className="p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white/80 dark:bg-zinc-900/80 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 cursor-pointer shadow-sm transition-all duration-300 flex items-center justify-center"
+              aria-label="Report bug or give feedback"
+              title="Report Bug / Feedback"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v5.03z" />
+              </svg>
+            </a>
+            <a
+              href="https://github.com/Manishgupta3239/json-parser"
               target="_blank"
               rel="noreferrer"
               className="p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white/80 dark:bg-zinc-900/80 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 cursor-pointer shadow-sm transition-all duration-300 flex items-center justify-center"
@@ -326,7 +338,7 @@ export default function App() {
             <div className="p-4 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between bg-zinc-50/50 dark:bg-zinc-900/50">
               <div className="flex items-center gap-2">
                 <span className="w-2.5 h-2.5 rounded-full bg-indigo-500 animate-pulse"></span>
-                <span className="font-semibold text-zinc-900 dark:text-zinc-150 text-sm">Input JSON</span>
+                <span className="font-semibold text-zinc-900 dark:text-zinc-100 text-sm">Input JSON</span>
               </div>
               <div className="flex items-center gap-1">
                 <button
@@ -350,7 +362,13 @@ export default function App() {
               <textarea
                 ref={textareaRef}
                 value={inputJson}
-                onChange={(e) => setInputJson(e.target.value)}
+                onChange={(e) => {
+                  setInputJson(e.target.value);
+                  if (!e.target.value.trim()) {
+                    setFilterQuery('');
+                  }
+                }}
+                onPaste={() => setFilterQuery('')}
                 placeholder="Paste your raw JSON here..."
                 spellCheck="false"
                 className="flex-1 w-full h-full resize-none font-mono text-sm leading-relaxed text-zinc-800 dark:text-zinc-200 bg-transparent border-0 focus:outline-none focus:ring-0 placeholder-zinc-400 dark:placeholder-zinc-600 select-text overflow-y-auto"
@@ -437,7 +455,7 @@ export default function App() {
             <div className="p-2 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between bg-zinc-50/50 dark:bg-zinc-900/50 flex-wrap sm:flex-nowrap gap-2">
               <div className="flex items-center gap-1.5 flex-shrink-0">
                 <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-                <span className="font-semibold text-zinc-900 dark:text-zinc-150 text-xs hidden md:inline">Simplified View</span>
+                <span className="font-semibold text-zinc-900 dark:text-zinc-100 text-xs hidden md:inline">Simplified View</span>
               </div>
               
               {/* Search Bar & Mode Switcher in Header */}
